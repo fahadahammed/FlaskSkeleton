@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.pyc
+*.pyc
 
 # C extensions
 *.so
@@ -84,11 +86,15 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+.virtualenvironment 
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+.virtualenvironment/
+
+
 
 # Spyder project settings
 .spyderproject
@@ -102,3 +108,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
