@@ -9,10 +9,42 @@
 # This script will create the necessary folders and files with environment.
 # -------------------------------------------------------------------------
 
+echo -e "This is a Flask project initiator or generator with a predefined structure I always prefer to use.\n"
+
+
+# Base Folder
+BaseFolder=Projects
+if [ ! -d "$BaseFolder" ]; then
+  echo -e "Folder not exists.\n";
+  echo -e "Creating Folder...\n";
+  mkdir -p "$BaseFolder";
+fi
+
+
+# Packages for requirements
+Packages=(
+flask
+passlib
+sqlalchemy
+mysqlclient
+Flask_Cache
+gunicorn
+redis
+requests
+Flask-Limiter
+setproctitle
+python-dateutil
+)
+
+
+
+
+# Project Author
 ProjectAuthor="Fahad Ahammed"
+# read -p "Enter Project Author Name: " ProjectAuthor
 
 
-
+# Project Name
 if [ -z "$1" ]
 then
 	echo "No argument supplied";
@@ -27,13 +59,17 @@ then
 	exit;
 fi
 
-
-ProjectVersion=$(echo "$projectname_"`date +%Y-%m-%d_%H-%M-%S` | awk '{print tolower($0)}')
-
-
 echo -e "Project Name: $projectname \n"
 
+# Project Version
+ProjectVersion=$(echo "$projectname_"`date +%Y-%m-%d_%H-%M-%S` | awk '{print tolower($0)}')
+echo -e "Project Version: $ProjectVersion \n"
 
+
+# Functions
+#----------
+
+# MetaData
 function addmeta {
 	echo -e "Adding Metadata.\n"
 	if [ -n "$1" ]
@@ -54,28 +90,28 @@ function addmeta {
 	fi
 }
 
-
+# remove junks
 function removejunksF {
 	echo -e "Removing Junks\n";
 
-	if [ -d "$projectname" ];
+	if [ -d "$BaseFolder/$projectname" ];
 	then
-		rm -Rf $projectname;
+		rm -Rf $BaseFolder/$projectname;
 	fi;
 
-	if [ -d "Logs" ];
+	if [ -d "$BaseFolder/$projectname/Logs" ];
         then
-                rm -Rf Logs;
+                rm -Rf "$BaseFolder/$projectname/Logs";
         fi;
 
-	if [ -d "Extras" ];
+	if [ -d "$BaseFolder/$projectname/Extras" ];
         then
-                rm -Rf Extras;
+                rm -Rf "$BaseFolder/$projectname/Extras";
         fi;
 
-	if [ -f "run.py" ];
+	if [ -f "$BaseFolder/$projectname/run.py" ];
 	then
-        	rm run.py;
+        	rm "$BaseFolder/$projectname/run.py";
 	fi
 
 }
@@ -84,30 +120,45 @@ function removejunksF {
 removejunksF
 
 
+# Create Folders
 #--------------------------
 echo -e "Creating Folders.\n"
-mkdir -p $projectname/Configuration
-mkdir -p $projectname/Library
-mkdir -p $projectname/Model
-mkdir -p $projectname/templates
-mkdir -p $projectname/static
-mkdir -p Logs
-mkdir -p Extras
+mkdir -p "$BaseFolder/$projectname/$projectname/Configuration"
+mkdir -p "$BaseFolder/$projectname/$projectname/Library"
+mkdir -p "$BaseFolder/$projectname/$projectname/Model"
+mkdir -p "$BaseFolder/$projectname/$projectname/templates"
+mkdir -p "$BaseFolder/$projectname/$projectname/static"
+mkdir -p "$BaseFolder/$projectname/Logs"
+mkdir -p "$BaseFolder/$projectname/Extras"
 
 #--------------------------
 echo -e "Creating Files.\n"
-touch run.py
-touch $projectname/__init__.py
-touch $projectname/Configuration/__init__.py
-touch $projectname/Library/__init__.py
-touch $projectname/Model/__init__.py
+touch "$BaseFolder/$projectname/requirements.txt"
+touch "$BaseFolder/$projectname/gunicorn.py";
+touch "$BaseFolder/$projectname/run.py"
+touch "$BaseFolder/$projectname/$projectname/__init__.py"
+touch "$BaseFolder/$projectname/$projectname/Configuration/__init__.py"
+touch "$BaseFolder/$projectname/$projectname/Library/__init__.py"
+touch "$BaseFolder/$projectname/$projectname/Model/__init__.py"
 
 #-------------------------
 echo -e "Adding Meta Data.\n"
-find ./ -type f -name "*.py" | while read f;
+find "$BaseFolder/$projectname" -type f -name "*.py" | while read f;
 do
 	addmeta $f;
 done
+
+#-------------Gunicorn-------------
+cat Dependables/gunicorn.py >> "$BaseFolder/$projectname/gunicorn.py";
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/gunicorn.py";
+
+
+#-------------------------
+echo ${Packages[@]} | sed 's| |\n|g' | while read f;
+do
+  echo $f >> "$BaseFolder/$projectname/requirements.txt";
+done
+
 
 
 
