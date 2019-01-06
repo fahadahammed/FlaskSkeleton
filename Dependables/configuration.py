@@ -76,9 +76,9 @@ class ProductionConfig(BaseConfig):
 
 
 config = {
-    "dev": "Rokyda.Configuration.configuration.DevelopmentConfig",
-    "prod": "Rokyda.Configuration.configuration.ProductionConfig",
-    "default": "Rokyda.Configuration.configuration.DevelopmentConfig"
+    "dev": "{PROJECT_NAME}.Configuration.configuration.DevelopmentConfig",
+    "prod": "{PROJECT_NAME}.Configuration.configuration.ProductionConfig",
+    "default": "{PROJECT_NAME}.Configuration.configuration.DevelopmentConfig"
 }
 
 
