@@ -34,9 +34,11 @@ requests
 Flask-Limiter
 setproctitle
 python-dateutil
+skpy
 )
 
-
+# SecretKey
+SecretKey=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 40 ; echo '')
 
 
 # Project Author
@@ -126,6 +128,7 @@ echo -e "Creating Folders.\n"
 mkdir -p "$BaseFolder/$projectname/$projectname/Configuration"
 mkdir -p "$BaseFolder/$projectname/$projectname/Library"
 mkdir -p "$BaseFolder/$projectname/$projectname/Model"
+mkdir -p "$BaseFolder/$projectname/$projectname/Views"
 mkdir -p "$BaseFolder/$projectname/$projectname/templates"
 mkdir -p "$BaseFolder/$projectname/$projectname/static"
 mkdir -p "$BaseFolder/$projectname/Logs"
@@ -134,12 +137,15 @@ mkdir -p "$BaseFolder/$projectname/Extras"
 #--------------------------
 echo -e "Creating Files.\n"
 touch "$BaseFolder/$projectname/requirements.txt"
-touch "$BaseFolder/$projectname/gunicorn.py";
+touch "$BaseFolder/$projectname/gunicorn.py"
 touch "$BaseFolder/$projectname/run.py"
 touch "$BaseFolder/$projectname/$projectname/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Configuration/__init__.py"
+touch "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 touch "$BaseFolder/$projectname/$projectname/Library/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Model/__init__.py"
+touch "$BaseFolder/$projectname/$projectname/Views/__init__.py"
+touch "$BaseFolder/$projectname/$projectname/Views/home.py"
 
 #-------------------------
 echo -e "Adding Meta Data.\n"
@@ -153,14 +159,29 @@ cat Dependables/gunicorn.py >> "$BaseFolder/$projectname/gunicorn.py";
 sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/gunicorn.py";
 
 
-#-------------------------
+#-------------Configuration-------------
+cat Dependables/configuration.py >> "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+sed -i "s|{PROJECT_NAME-RANDOM}|$SecretKey|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+
+
+#------------Requirements-------------
 echo ${Packages[@]} | sed 's| |\n|g' | while read f;
 do
   echo $f >> "$BaseFolder/$projectname/requirements.txt";
 done
 
+#-----------RUN------------
+cat Dependables/run.py >> "$BaseFolder/$projectname/run.py"
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/run.py"
+
+#-------------INIT------------
+cat Dependables/__init__.py >> "$BaseFolder/$projectname/$projectname/__init__.py"
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/__init__.py"
+
+#----------------------- VIEWS --------------------
+cat Dependables/home.py >> "$BaseFolder/$projectname/$projectname/Views/home.py"
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Views/home.py"
 
 
-
-
-removejunksF
+# removejunksF
