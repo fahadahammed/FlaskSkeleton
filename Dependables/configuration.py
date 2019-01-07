@@ -31,8 +31,8 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
     ENV = 'dev'
-    HOST = "127.0.0.1"
-    PORT = 112201
+    HOST = "{HOST}"
+    PORT = {PORT}
     TEMPLATES_AUTO_RELOAD = True
     SECRET_KEY = 'a9eec0e0-23b7-4788-9a92-318347b9a39f'
     ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"
@@ -55,8 +55,8 @@ class ProductionConfig(BaseConfig):
     DEBUG = False
     TESTING = False
     ENV = 'prod'
-    HOST = "127.0.0.1"
-    PORT = 223301
+    HOST = "{HOST}"
+    PORT = {PORT}
     TEMPLATES_AUTO_RELOAD = False
     SECRET_KEY = 'hrtyhdfjsfgdhs(&%^4378ryqs8df6rtq27gbuyst^&IRSYUAErgv7q2wge)'
     ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"

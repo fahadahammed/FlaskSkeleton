@@ -67,6 +67,35 @@ echo -e "Project Name: $projectname \n"
 ProjectVersion=$(echo "$projectname_"`date +%Y-%m-%d_%H-%M-%S` | awk '{print tolower($0)}')
 echo -e "Project Version: $ProjectVersion \n"
 
+# Host
+if [ -z "$2" ]
+then
+	echo "No Host specified.";
+	read -p "Enter Host: " host
+else
+  host=$2
+fi
+
+if [ -z "$host" ]
+then
+	exit;
+fi
+
+# Port
+if [ -z "$3" ]
+then
+	echo "No Port specified.";
+	read -p "Enter Port: " port
+else
+  port=$2
+fi
+
+if [ -z "$port" ]
+then
+	exit;
+fi
+
+
 
 # Functions
 #----------
@@ -157,13 +186,15 @@ done
 #-------------Gunicorn-------------
 cat Dependables/gunicorn.py >> "$BaseFolder/$projectname/gunicorn.py";
 sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/gunicorn.py";
-
+sed -i "s|{HOST}|$host|g" "$BaseFolder/$projectname/gunicorn.py";
+sed -i "s|{PORT}|$port|g" "$BaseFolder/$projectname/gunicorn.py";
 
 #-------------Configuration-------------
 cat Dependables/configuration.py >> "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{PROJECT_NAME-RANDOM}|$SecretKey|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
-
+sed -i "s|{HOST}|$host|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+sed -i "s|{PORT}|$port|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 
 #------------Requirements-------------
 echo ${Packages[@]} | sed 's| |\n|g' | while read f;

@@ -21,9 +21,9 @@ import os
 profile = os.getenv("FLASK_CONFIGURATION")
 if profile:
     if profile == "dev":
-        bind = '{HOST}:{PORT}'.format(HOST="0.0.0.0", PORT=5000)
+        bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
     if profile == "prod":
-        bind = '{HOST}:{PORT}'.format(HOST="0.0.0.0", PORT=7000)
+        bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
 
 backlog = 100
 # bind = '0.0.0.0:3003'
