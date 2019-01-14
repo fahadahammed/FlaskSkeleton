@@ -24,6 +24,9 @@ if profile:
         bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
     if profile == "prod":
         bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
+else:
+    bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
+
 
 backlog = 100
 # bind = '0.0.0.0:3003'
@@ -178,7 +181,7 @@ else:
 #       A string or None to choose a default of something like 'gunicorn'.
 #
 
-proc_name = {PROJECT_NAME}
+proc_name = '{PROJECT_NAME}'
 
 #
 # Server hooks

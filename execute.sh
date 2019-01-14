@@ -11,6 +11,8 @@
 
 echo -e "This is a Flask project initiator or generator with a predefined structure I always prefer to use.\n"
 
+ScriptDirectory=$(pwd)
+
 
 # Base Folder
 BaseFolder=Projects
@@ -62,6 +64,11 @@ then
 fi
 
 echo -e "Project Name: $projectname \n"
+
+# CACHE_KEY_PREFIX
+CACHE_KEY_PREF=$(echo $projectname | tr '[:upper:]' '[:lower:]')
+CACHE_KEY_PREFIX=$(echo '@'"$CACHE_KEY_PREF")
+
 
 # Project Version
 ProjectVersion=$(echo "$projectname_"`date +%Y-%m-%d_%H-%M-%S` | awk '{print tolower($0)}')
@@ -171,10 +178,12 @@ touch "$BaseFolder/$projectname/run.py"
 touch "$BaseFolder/$projectname/$projectname/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Configuration/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+touch "$BaseFolder/$projectname/$projectname/Configuration/connect.py"
 touch "$BaseFolder/$projectname/$projectname/Library/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Model/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Views/__init__.py"
 touch "$BaseFolder/$projectname/$projectname/Views/home.py"
+
 
 #-------------------------
 echo -e "Adding Meta Data.\n"
@@ -195,6 +204,11 @@ sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/
 sed -i "s|{PROJECT_NAME-RANDOM}|$SecretKey|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{HOST}|$host|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{PORT}|$port|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+sed -i "s|{CACHE_KEY_PREFIX}|$CACHE_KEY_PREFIX|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+
+#--------------Connect------------------
+cat Dependables/connect.py >> "$BaseFolder/$projectname/$projectname/Configuration/connect.py"
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Configuration/connect.py"
 
 #------------Requirements-------------
 echo ${Packages[@]} | sed 's| |\n|g' | while read f;
@@ -216,3 +230,12 @@ sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/
 
 
 # removejunksF
+
+
+
+# Create Virtualizaion
+cd "$ScriptDirectory/$BaseFolder/$projectname/";
+virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3.7
+source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
+pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
+deactivate

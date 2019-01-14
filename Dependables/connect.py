@@ -1,28 +1,28 @@
 import MySQLdb
+from {PROJECT_NAME} import app
 
-from Account import app
 
-
-class ConnectAccountDB:
+# DB CLASS
+class ConnectDB:
     def __init__(self):
-        self.db = MySQLdb.connect(host=app.config.get("ACCOUNT_DB_HOST"),  # your host
-                             user=app.config.get("ACCOUNT_DB_USER"),       # username
-                             passwd=app.config.get("ACCOUNT_DB_PASSWORD"),     # password
-                             db=app.config.get("ACCOUNT_DB_NAME"),   # name of the database
-                             port=app.config.get("ACCOUNT_DB_PORT"),
+        self.db = MySQLdb.connect(host=app.config.get("{PROJECT_NAME}_DB_HOST"),  # your host
+                             user=app.config.get("{PROJECT_NAME}_DB_USER"),       # username
+                             passwd=app.config.get("{PROJECT_NAME}_DB_PASSWORD"),     # password
+                             db=app.config.get("{PROJECT_NAME}_DB_NAME"),   # name of the database
+                             port=app.config.get("{PROJECT_NAME}_DB_PORT"),
                              use_unicode=True,
                              charset="utf8mb4"
         )
         self.db.commit()
 
 
+# Operation Class
 class AnyQuery:
-    def __init__(self, database=None):
-        if not database or "account" in database:
-            # Create Cursor for Account
-            self.db = ConnectAccountDB().db
-            self.cursor = self.db.cursor()
-            self.results = None
+    def __init__(self):
+        # Create Cursor for Account
+        self.db = ConnectDB().db
+        self.cursor = self.db.cursor()
+        self.results = None
 
     # Limiting Memory Usage by Chunking the data
     def resultIter(self, cursor, arraysize=1000):
@@ -36,10 +36,10 @@ class AnyQuery:
 
     def execute(self, query, parameters=None):
         method = "SELECT"
-        if query.split()[0].lower() == "select":
-            method = "SELECT"
         if query.split()[0].lower() == "insert":
             method = "INSERT"
+        if query.split()[0].lower() == "select":
+            method = "SELECT"
         if query.split()[0].lower() == "update":
             method = "UPDATE"
         if query.split()[0].lower() == "delete":
@@ -76,9 +76,11 @@ class AnyQuery:
             else:
                 self.cursor.execute(query)
             self.results = True
-            
+
+        # Transaction Commits and close connection.
         self.db.commit()
         self.cursor.close()
         self.db.close()
 
+        # Return Data
         return self.results
