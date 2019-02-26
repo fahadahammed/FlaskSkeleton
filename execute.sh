@@ -53,9 +53,10 @@ if [ -z "$1" ]
 then
 	echo "No argument supplied";
 	read -p "Enter Project Name: " projectname
-	projectname=$(echo $projectname | tr -s ' ' '_')
+	projectname=$(echo $projectname | tr -s ' ' '_' | tr [a-z] [A-Z])
 else
   projectname=$1
+  projectname=$(echo $projectname | tr -s ' ' '_' | tr [a-z] [A-Z])
 fi
 
 if [ -z "$projectname" ]
@@ -94,7 +95,7 @@ then
 	echo "No Port specified.";
 	read -p "Enter Port: " port
 else
-  port=$2
+  port=$3
 fi
 
 if [ -z "$port" ]
@@ -234,8 +235,8 @@ sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/
 
 
 # Create Virtualizaion
-cd "$ScriptDirectory/$BaseFolder/$projectname/";
-virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3.7
-source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
-pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
-deactivate
+# cd "$ScriptDirectory/$BaseFolder/$projectname/";
+# virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3
+# source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
+# pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
+# deactivate
