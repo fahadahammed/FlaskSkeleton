@@ -53,10 +53,10 @@ if [ -z "$1" ]
 then
 	echo "No argument supplied";
 	read -p "Enter Project Name: " projectname
-	projectname=$(echo $projectname | tr -s ' ' '_' | tr [a-z] [A-Z])
+	projectname=$(echo $projectname | tr -s ' ' '_' )
 else
   projectname=$1
-  projectname=$(echo $projectname | tr -s ' ' '_' | tr [a-z] [A-Z])
+  projectname=$(echo $projectname | tr -s ' ' '_' )
 fi
 
 if [ -z "$projectname" ]
@@ -235,8 +235,8 @@ sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/
 
 
 # Create Virtualizaion
-# cd "$ScriptDirectory/$BaseFolder/$projectname/";
-# virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3
-# source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
-# pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
-# deactivate
+cd "$ScriptDirectory/$BaseFolder/$projectname/";
+virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3
+source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
+pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
+deactivate
