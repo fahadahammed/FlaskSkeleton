@@ -15,7 +15,7 @@ configure_app(app)
 
 
 # Caching
-from flask_cache import Cache
+from flask_caching import Cache
 ncache = Cache(app, config={'CACHE_TYPE': app.config.get('CACHE_TYPE'),
                             'CACHE_REDIS_HOST': app.config.get('CACHE_REDIS_HOST'),
                             'CACHE_REDIS_PORT': app.config.get('CACHE_REDIS_PORT'),
