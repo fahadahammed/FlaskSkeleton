@@ -65,6 +65,7 @@ then
 fi
 
 echo -e "Project Name: $projectname \n"
+PROJECT_NAME_FOR_DB=(echo $projectname | awk '{print toupper($0)}')
 
 # CACHE_KEY_PREFIX
 CACHE_KEY_PREF=$(echo $projectname | tr '[:upper:]' '[:lower:]')
@@ -202,6 +203,7 @@ sed -i "s|{PORT}|$port|g" "$BaseFolder/$projectname/gunicorn.py";
 #-------------Configuration-------------
 cat Dependables/configuration.py >> "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
+sed -i "s|{PROJECT_NAME_FOR_DB}|$PROJECT_NAME_FOR_DB|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{PROJECT_NAME-RANDOM}|$SecretKey|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{HOST}|$host|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
 sed -i "s|{PORT}|$port|g" "$BaseFolder/$projectname/$projectname/Configuration/configuration.py"
@@ -235,8 +237,8 @@ sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/
 
 
 # Create Virtualizaion
-cd "$ScriptDirectory/$BaseFolder/$projectname/";
-virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3
-source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
-pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
-deactivate
+#cd "$ScriptDirectory/$BaseFolder/$projectname/";
+#virtualenv "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment --python=python3
+#source "$ScriptDirectory/$BaseFolder/$projectname/".virtualenvironment/bin/activate
+#pip install -r "$ScriptDirectory/$BaseFolder/$projectname/"requirements.txt
+#deactivate
