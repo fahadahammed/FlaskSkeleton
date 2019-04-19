@@ -35,6 +35,7 @@ class DevelopmentConfig(BaseConfig):
     PORT = {PORT}
     TEMPLATES_AUTO_RELOAD = True
     SECRET_KEY = '{PROJECT_NAME-RANDOM}'
+
     ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"
 
     CACHE_TYPE = 'redis'
@@ -83,5 +84,5 @@ config = {
 
 
 def configure_app(app):
-    config_name = os.getenv('FLASK_CONFIGURATION', 'default')
+    config_name = os.getenv('APP_ENV', 'default')
     app.config.from_object(config[config_name])
