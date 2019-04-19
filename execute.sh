@@ -29,7 +29,7 @@ flask
 passlib
 sqlalchemy
 mysqlclient
-Flask_Cache
+Flask_Caching
 gunicorn
 redis
 requests

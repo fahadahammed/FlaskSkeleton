@@ -34,7 +34,7 @@ class DevelopmentConfig(BaseConfig):
     HOST = "{HOST}"
     PORT = {PORT}
     TEMPLATES_AUTO_RELOAD = True
-    SECRET_KEY = '{PROJECT_NAME-RANDOM}'
+    SECRET_KEY = "{PROJECT_NAME-RANDOM}"
 
     ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"
 
@@ -45,11 +45,11 @@ class DevelopmentConfig(BaseConfig):
     CACHE_KEY_PREFIX = '{CACHE_KEY_PREFIX}'
     CACHE_DEFAULT_TIMEOUT = 43200
 
-    {PROJECT_NAME}_DB_PORT = 3306
-    {PROJECT_NAME}_DB_HOST = "127.0.0.1"
-    {PROJECT_NAME}_DB_USER = "{PROJECT_NAME}"
-    {PROJECT_NAME}_DB_PASSWORD = "{PROJECT_NAME}"
-    {PROJECT_NAME}_DB_NAME = "{PROJECT_NAME}"
+    {PROJECT_NAME_FOR_DB}_DB_PORT = 3306
+    {PROJECT_NAME_FOR_DB}_DB_HOST = "127.0.0.1"
+    {PROJECT_NAME_FOR_DB}_DB_USER = "{PROJECT_NAME}"
+    {PROJECT_NAME_FOR_DB}_DB_PASSWORD = "{PROJECT_NAME}"
+    {PROJECT_NAME_FOR_DB}_DB_NAME = "{PROJECT_NAME}"
 
 
 class ProductionConfig(BaseConfig):
@@ -59,7 +59,7 @@ class ProductionConfig(BaseConfig):
     HOST = "{HOST}"
     PORT = {PORT}
     TEMPLATES_AUTO_RELOAD = False
-    SECRET_KEY = '{PROJECT_NAME-RANDOM}'
+    SECRET_KEY = "{PROJECT_NAME-RANDOM}"
     ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"
 
     CACHE_TYPE = 'redis'
@@ -69,11 +69,11 @@ class ProductionConfig(BaseConfig):
     CACHE_KEY_PREFIX = '{CACHE_KEY_PREFIX}'
     CACHE_DEFAULT_TIMEOUT = 43200
 
-    {PROJECT_NAME}_DB_PORT = 3306
-    {PROJECT_NAME}_DB_HOST = "127.0.0.1"
-    {PROJECT_NAME}_DB_USER = "{PROJECT_NAME}"
-    {PROJECT_NAME}_DB_PASSWORD = "{PROJECT_NAME}"
-    {PROJECT_NAME}_DB_NAME = "{PROJECT_NAME}"
+    {PROJECT_NAME_FOR_DB}_DB_PORT = 3306
+    {PROJECT_NAME_FOR_DB}_DB_HOST = "127.0.0.1"
+    {PROJECT_NAME_FOR_DB}_DB_USER = "{PROJECT_NAME}"
+    {PROJECT_NAME_FOR_DB}_DB_PASSWORD = "{PROJECT_NAME}"
+    {PROJECT_NAME_FOR_DB}_DB_NAME = "{PROJECT_NAME}"
 
 
 config = {
@@ -84,5 +84,5 @@ config = {
 
 
 def configure_app(app):
-    config_name = os.getenv('APP_ENV', 'default')
+    config_name = os.getenv('APPLICATION_ENV', 'default')
     app.config.from_object(config[config_name])
