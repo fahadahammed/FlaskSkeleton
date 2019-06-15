@@ -65,7 +65,7 @@ then
 fi
 
 echo -e "Project Name: $projectname \n"
-PROJECT_NAME_FOR_DB=(echo $projectname | awk '{print toupper($0)}')
+PROJECT_NAME_FOR_DB=$(echo $projectname | awk '{print toupper($0)}')
 
 # CACHE_KEY_PREFIX
 CACHE_KEY_PREF=$(echo $projectname | tr '[:upper:]' '[:lower:]')
