@@ -37,6 +37,9 @@ Flask-Limiter
 setproctitle
 python-dateutil
 skpy
+pika
+pymongo
+apscheduler
 )
 
 # SecretKey
