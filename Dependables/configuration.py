@@ -27,48 +27,48 @@ LOGGING_CONFIG = {
 
 
 class BaseConfig(object):
-    PROTECTED_PATH = "ProtectedPath"
-    THREADED = True
-    ACCOUNT_ENDPOINT = "http://127.0.0.1:44402"
+    APPLICATION_NAME = "{PROJECT_NAME}"
+    {PROJECT_NAME}_VERSION = "1.0.1"
 
-class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
-    ENV = 'dev'
+    PROTECTED_PATH = "ProtectedPath"
+    TEMPLATES_AUTO_RELOAD = True
+    THREADED = True
+    ACCOUNT_ENDPOINT = "http://127.0.0.1:36302"
     HOST = "{HOST}"
     PORT = {PORT}
-    TEMPLATES_AUTO_RELOAD = True
-    SECRET_KEY = "{PROJECT_NAME-RANDOM}"
 
-    CACHE_TYPE = 'redis'
-    CACHE_REDIS_HOST = '127.0.0.1'
-    CACHE_REDIS_PORT = 6379
-    CACHE_REDIS_DB = '11'
-    CACHE_KEY_PREFIX = '{CACHE_KEY_PREFIX}'
-    CACHE_DEFAULT_TIMEOUT = 43200
-
-    {PROJECT_NAME_FOR_DB}_DB_PORT = 3306
+    {PROJECT_NAME_FOR_DB}_DB_PORT = 27017
     {PROJECT_NAME_FOR_DB}_DB_HOST = "127.0.0.1"
     {PROJECT_NAME_FOR_DB}_DB_USER = "{PROJECT_NAME}"
     {PROJECT_NAME_FOR_DB}_DB_PASSWORD = "{PROJECT_NAME}"
     {PROJECT_NAME_FOR_DB}_DB_NAME = "{PROJECT_NAME}"
 
 
+class DevelopmentConfig(BaseConfig):
+    ENV = 'dev'
+    SECRET_KEY = "{PROJECT_NAME-RANDOM}"
+
+    CACHE_TYPE = 'simple'
+    CACHE_REDIS_HOST = '127.0.0.1'
+    CACHE_REDIS_PORT = 6379
+    CACHE_REDIS_DB = '11'
+    CACHE_KEY_PREFIX = '@{PROJECT_NAME}'
+    CACHE_DEFAULT_TIMEOUT = 43200
+
+
 class ProductionConfig(BaseConfig):
-    DEBUG = False
-    TESTING = False
     ENV = 'prod'
-    HOST = "{HOST}"
-    PORT = {PORT}
+
     TEMPLATES_AUTO_RELOAD = False
     SECRET_KEY = "{PROJECT_NAME-RANDOM}"
-    ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"
 
     CACHE_TYPE = 'redis'
     CACHE_REDIS_HOST = '127.0.0.1'
     CACHE_REDIS_PORT = 6379
     CACHE_REDIS_DB = '11'
-    CACHE_KEY_PREFIX = '{CACHE_KEY_PREFIX}'
+    CACHE_KEY_PREFIX = '@{PROJECT_NAME}'
     CACHE_DEFAULT_TIMEOUT = 43200
 
     {PROJECT_NAME_FOR_DB}_DB_PORT = 3306
@@ -88,3 +88,6 @@ config = {
 def configure_app(app):
     config_name = os.getenv('ENV', 'default')
     app.config.from_object(config[config_name])
+
+
+
