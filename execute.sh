@@ -217,8 +217,8 @@ sed -i "s|{CACHE_KEY_PREFIX}|$CACHE_KEY_PREFIX|g" "$BaseFolder/$projectname/$pro
 cat Dependables/connect.py >> "$BaseFolder/$projectname/$projectname/Configuration/connect.py"
 sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Configuration/connect.py"
 #--------------MongoConnect------------------
-cat Dependables/MongoOperations.py >> "$BaseFolder/$projectname/$projectname/Configuration/MongoOperations.py"
-sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Configuration/MongoOperations.py"
+cat Dependables/MongoOperations.py >> "$BaseFolder/$projectname/$projectname/Library/MongoOperations.py"
+sed -i "s|{PROJECT_NAME}|$projectname|g" "$BaseFolder/$projectname/$projectname/Library/MongoOperations.py"
 #------------Requirements-------------
 echo ${Packages[@]} | sed 's| |\n|g' | while read f;
 do
