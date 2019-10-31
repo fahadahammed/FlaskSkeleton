@@ -1,5 +1,8 @@
 import os
 
+if not os.path.exists("Logs"):
+    os.mkdir("Logs")
+
 LOGGING_CONFIG = {
     'version': 1,
     'formatters': {'default': {
@@ -26,6 +29,7 @@ LOGGING_CONFIG = {
 class BaseConfig(object):
     PROTECTED_PATH = "ProtectedPath"
     THREADED = True
+    ACCOUNT_ENDPOINT = "http://127.0.0.1:44402"
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
@@ -35,8 +39,6 @@ class DevelopmentConfig(BaseConfig):
     PORT = {PORT}
     TEMPLATES_AUTO_RELOAD = True
     SECRET_KEY = "{PROJECT_NAME-RANDOM}"
-
-    ACCOUNT_ENDPOINT = "http://127.0.0.1:55501/"
 
     CACHE_TYPE = 'redis'
     CACHE_REDIS_HOST = '127.0.0.1'
@@ -84,5 +86,5 @@ config = {
 
 
 def configure_app(app):
-    config_name = os.getenv('APPLICATION_ENV', 'default')
+    config_name = os.getenv('ENV', 'default')
     app.config.from_object(config[config_name])
