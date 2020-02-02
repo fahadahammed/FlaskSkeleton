@@ -1,5 +1,9 @@
+import os
+import json
 from flask import Flask
-from {PROJECT_NAME}.Configuration.configuration import configure_app, LOGGING_CONFIG
+from DeployTank.Configuration.configuration import configure_app, LOGGING_CONFIG
+from flask_httpauth import HTTPBasicAuth
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Logging
 from logging.config import dictConfig
@@ -12,6 +16,21 @@ app = Flask(__name__,
 
 # Configuration
 configure_app(app)
+
+# Basic Auth
+auth = HTTPBasicAuth()
+usersObject = json.load(open(str(os.getcwd()) + "/DeployTank/Configuration/users.json"))
+users = {}
+for i in usersObject:
+    users[i] = generate_password_hash(usersObject[i])
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username in users:
+        return check_password_hash(users.get(username), password)
+    else:
+        return False
 
 
 # Caching
@@ -30,10 +49,20 @@ from flask_limiter.util import get_remote_address
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["50 per minute", "2 per second"],
+    default_limits=["3000 per minute", "500 per second"],
 )
 
 
+# Extras
+os.makedirs(str(os.path.abspath(path="./"))+"/"+app.config["PROTECTED_PATH"], exist_ok=True)
+
 
 # Routes
-from {PROJECT_NAME}.Views import home
+from DeployTank.Views import home
+from DeployTank.Views import catch
+from DeployTank.Views import roktest
+from DeployTank.Views import cpu
+from DeployTank.Views import notifier
+from DeployTank.Views import serviceinfo
+from DeployTank.Views import gclog
+from DeployTank.Views import development

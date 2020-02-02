@@ -1,4 +1,19 @@
+# -----------------------------
+#
+# Project: DeployTank
+# Version: 2019-08-05_13-14-42
+#
+# Date: Mon Aug 5 13:15:48 +06 2019
+# Created By: Fahad Ahammed
+#
+# -----------------------------
 import os
+import multiprocessing
+import threading
+import sys
+import traceback
+from PROJECTNAMEFSKLTN import app
+
 
 ###
 # Server socket
@@ -18,21 +33,31 @@ import os
 #       range.
 #
 
-profile = os.getenv("FLASK_CONFIGURATION")
-if profile:
-    if profile == "dev":
-        bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
-    if profile == "prod":
-        bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
-else:
-    bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS="{HOST}", PORTINT={PORT})
+profile = os.getenv("ENV")
+bind = '{HOSTADDRESS}:{PORTINT}'.format(HOSTADDRESS=app.config['HOST'], PORTINT=app.config['PORT'])
 
 
 backlog = 100
-# bind = '0.0.0.0:3003'
-# backlog = 2048
-#
-#
+
+
+# Extras
+reload = True
+# reload_extra_files = ["DeployTank/templates/head.html"]
+
+
+def get_reload_extra_files():
+    fpath = "PROJECTNAMEFSKLTN/templates/"
+    final_files = []
+    directory = str(os.getcwd()) + "/" + fpath
+    files_from_dir = os.listdir(directory)
+    for i in files_from_dir:
+        relative_path_to_file = fpath + i
+        final_files.append(relative_path_to_file)
+    return final_files
+
+reload_extra_files = get_reload_extra_files()
+
+
 # Worker processes
 #
 #   workers - The number of worker processes that this server
@@ -76,12 +101,12 @@ backlog = 100
 #       A positive integer. Generally set in the 1-5 seconds range.
 #
 
-workers = 2
+
+workers = multiprocessing.cpu_count()
 worker_class = 'sync'
-worker_connections = 200
-timeout = 1200
-keepalive = 3
-thread = 3
+worker_connections = 1000
+timeout = 30
+keepalive = 1
 
 #
 #   spew - Install a trace function that spews every line of Python
@@ -133,7 +158,7 @@ spew = False
 #
 
 daemon = False
-pidfile = "{PROJECT_NAME}.pid"
+pidfile = "PROJECTNAMEFSKLTN.pid"
 umask = 0
 user = None
 group = None
@@ -181,7 +206,7 @@ else:
 #       A string or None to choose a default of something like 'gunicorn'.
 #
 
-proc_name = '{PROJECT_NAME}'
+proc_name = 'PROJECTNAMEFSKLTN'
 
 #
 # Server hooks
@@ -215,9 +240,6 @@ def when_ready(server):
 
 def worker_int(worker):
     worker.log.info("worker received INT or QUIT signal")
-
-    ## get traceback info
-    import threading, sys, traceback
     id2name = dict([(th.ident, th.name) for th in threading.enumerate()])
     code = []
     for threadId, stack in sys._current_frames().items():
