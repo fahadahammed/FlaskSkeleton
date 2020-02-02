@@ -19,7 +19,7 @@ configure_app(app)
 
 # Basic Auth
 auth = HTTPBasicAuth()
-usersObject = json.load(open(str(os.getcwd()) + "/PROJECTNAMEFSKLTN/Configuration/users.json"))
+usersObject = json.load(open(str(os.getcwd()) + "/Hola/Configuration/users.json"))
 users = {}
 for i in usersObject:
     users[i] = generate_password_hash(usersObject[i])
@@ -58,4 +58,4 @@ os.makedirs(str(os.path.abspath(path="./"))+"/"+app.config["PROTECTED_PATH"], ex
 
 
 # Routes
-from PROJECTNAMEFSKLTN.Views import home
+from Hola.Views import home

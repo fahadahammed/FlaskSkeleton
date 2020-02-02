@@ -1,0 +1,11 @@
+flask
+passlib
+Flask_Caching
+Flask-Limiter
+requests
+redis
+setproctitle
+python-dateutil
+pymongo
+apscheduler
+uwsgi

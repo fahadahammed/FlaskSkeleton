@@ -15,6 +15,7 @@ import logging
 import argparse
 import subprocess
 import random
+import shutil
 
 
 # Helper Functions
@@ -40,8 +41,11 @@ def timeit_wrapper(func):
 def progress_wrapper(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        start = time.perf_counter()
         func_return_val = func(*args, **kwargs)
+        end = time.perf_counter()
         print("✓ {0:<8}".format(func.__name__))
+        print(" Took {0}seconds.\n".format(end - start))
         return func_return_val
 
     return wrapper
@@ -112,6 +116,7 @@ class flaSkeletonInitiate:
             16: "uwsgi"
         }
         self.project_directory = self.pd = self.od + "/" + self.projectName
+        self.project_inner_directory = self.pind = self.pd + "/" + self.projectName
         self.config_directory = self.cfgd = self.pd + "/" + self.projectName + "/Configuration"
         self.library_directory = self.libd = self.pd + "/" + self.projectName + "/Library"
         self.model_directory = self.modd = self.pd + "/" + self.projectName + "/Model"
@@ -152,11 +157,9 @@ class flaSkeletonInitiate:
         def create_folders(folder):
             if not os.path.exists(folder):
                 os.makedirs(folder)
+        for i in folders_to_create:
+            create_folders(folder=i)
 
-        for _f in folders_to_create:
-            create_folders(_f)
-            if _f not in (self.od, self.pd, self.statd, self.temd):
-                os.mknod(_f + "/__init__.py")
         return "True"
 
     @progress_wrapper
@@ -172,13 +175,61 @@ class flaSkeletonInitiate:
 
     @progress_wrapper
     def create_run_files(self):
+        run_files = (
+            "gunicorn.py",
+            "uwsgi.ini",
+            "run.py"
+        )
+        for i in run_files:
+            old_loc = "Dependables/" + i
+            new_loc = self.pd + "/" + i
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc, content=_i.replace("PROJECTNAMEFSKLTN", self.projectName), mode="append")
+        return True
 
+    @progress_wrapper
+    def create_init_files(self):
+        polders = (self.pind, self.cfgd, self.libd, self.modd, self.vied)
+        for _f in polders:
+            if _f != self.pind:
+                os.mknod(_f + "/__init__.py")
+            else:
+                old_loc = "Dependables/" + "__init__.py"
+                new_loc = _f + "/" + "__init__.py"
+                with open(old_loc, 'r', encoding='utf-8') as old_f:
+                    for _i in old_f.readlines():
+                        self.file_writer(file_name=new_loc, content=_i.replace("PROJECTNAMEFSKLTN", self.projectName),
+                                         mode="append")
+
+        return True
+
+    @progress_wrapper
+    def create_configuration_files(self):
+        pass
+
+    @progress_wrapper
+    def create_library_files(self):
+        pass
+
+    @progress_wrapper
+    def create_model_files(self):
+        pass
+
+    @progress_wrapper
+    def create_view_files(self):
+        pass
 
     def initiate_project_creation(self):
         self.create_folder_structure()
+        self.create_init_files()
         self.create_requirements_file()
         self.create_gitignore_file()
         self.create_run_files()
+        self.create_configuration_files()
+        self.create_library_files()
+        self.create_model_files()
+        self.create_view_files()
         return self.projectName, self.packages, self.hostName, self.port
 
 
