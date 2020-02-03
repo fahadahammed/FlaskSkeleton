@@ -11,6 +11,6 @@ class _m_Home:
             "_msg": "Welcome to PROJECTNAMEFSKLTN !"
         }
 
-    def index(self):
-        self.to_return["_function"] = self.index.__name__
+    def get_home(self):
+        self.to_return["_function"] = self.get_home.__name__
         return self.to_return

@@ -1,9 +1,7 @@
 import os
 import json
 from flask import Flask
-from DeployTank.Configuration.configuration import configure_app, LOGGING_CONFIG
-from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import generate_password_hash, check_password_hash
+from PROJECTNAMEFSKLTN.Configuration.configuration import configure_app, LOGGING_CONFIG
 
 # Logging
 from logging.config import dictConfig
@@ -16,21 +14,6 @@ app = Flask(__name__,
 
 # Configuration
 configure_app(app)
-
-# Basic Auth
-auth = HTTPBasicAuth()
-usersObject = json.load(open(str(os.getcwd()) + "/PROJECTNAMEFSKLTN/Configuration/users.json"))
-users = {}
-for i in usersObject:
-    users[i] = generate_password_hash(usersObject[i])
-
-
-@auth.verify_password
-def verify_password(username, password):
-    if username in users:
-        return check_password_hash(users.get(username), password)
-    else:
-        return False
 
 
 # Caching
@@ -58,4 +41,4 @@ os.makedirs(str(os.path.abspath(path="./"))+"/"+app.config["PROTECTED_PATH"], ex
 
 
 # Routes
-from PROJECTNAMEFSKLTN.Views import home
+from PROJECTNAMEFSKLTN.Views import _v_Home

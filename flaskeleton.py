@@ -197,7 +197,7 @@ class flaSkeletonInitiate:
                     self.file_writer(file_name=new_loc,
                                      content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
                                          "PROJECTNAMEFSKLTN", self.projectName
-                                     ),
+                                     ).replace("_FSKLTN_HOST", self.hostName).replace("_FSKLTN_PORT", str(self.port)),
                                      mode="append")
 
             old_loc = "Dependables/" + "MongoDatabaseLibrary.py"
@@ -258,7 +258,7 @@ class flaSkeletonInitiate:
     @progress_wrapper
     def create_model_files(self):
         old_loc = "Dependables/" + "_m_Home.py"
-        new_loc = self.libd + "/_m_Home.py"
+        new_loc = self.modd + "/_m_Home.py"
         with open(old_loc, 'r', encoding='utf-8') as old_f:
             for _i in old_f.readlines():
                 self.file_writer(file_name=new_loc,
@@ -271,7 +271,7 @@ class flaSkeletonInitiate:
     @progress_wrapper
     def create_view_files(self):
         old_loc = "Dependables/" + "_v_Home.py"
-        new_loc = self.libd + "/_v_Home.py"
+        new_loc = self.vied + "/_v_Home.py"
         with open(old_loc, 'r', encoding='utf-8') as old_f:
             for _i in old_f.readlines():
                 self.file_writer(file_name=new_loc,
@@ -285,7 +285,7 @@ class flaSkeletonInitiate:
     def create_template_files(self):
         for i in ("Home.html", "Head.html", "Foot.html"):
             old_loc = "Dependables/" + i
-            new_loc = self.libd + "/" + i
+            new_loc = self.temd + "/" + i
             with open(old_loc, 'r', encoding='utf-8') as old_f:
                 for _i in old_f.readlines():
                     self.file_writer(file_name=new_loc,

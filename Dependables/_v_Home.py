@@ -8,7 +8,7 @@ from PROJECTNAMEFSKLTN.Model._m_Home import _m_Home
 @app.route("/", methods=["GET"])
 def _v_home():
     if request.method == "GET":
-        to_return = _m_Home().get_data()
+        to_return = _m_Home().get_home()
         return render_template(template_name_or_list="Home.html", to_return=to_return)
 
 
@@ -16,7 +16,7 @@ def _v_home():
 @app.route("/api/", methods=["GET"])
 def _v_home_api():
     if request.method == "GET":
-        to_return = _m_Home().get_data()
+        to_return = _m_Home().get_home()
         return jsonify(to_return)
 
 

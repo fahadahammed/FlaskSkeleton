@@ -32,8 +32,8 @@ class BaseConfig(object):
     THREADED = True
 
     ENV = 'dev'
-    HOST = "0.0.0.0"
-    PORT = 5500
+    HOST = "_FSKLTN_HOST"
+    PORT = _FSKLTN_PORT
 
     CACHE_TYPE = 'simple'
 
