@@ -19,25 +19,6 @@ import shutil
 
 
 # Helper Functions
-def print_and_log(message):
-    logging.info(message)
-    print(message)
-
-
-def timeit_wrapper(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        start = time.perf_counter()  # Alternatively, you can use time.process_time()
-        func_return_val = func(*args, **kwargs)
-        end = time.perf_counter()
-        timeit_message = 'Time Took: {0:<10}.{1:<8} : {2:<8} Seconds'.format(func.__module__, func.__name__,
-                                                                             end - start)
-        print_and_log(message=timeit_message)
-        return func_return_val
-
-    return wrapper
-
-
 def progress_wrapper(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -91,8 +72,8 @@ logs.log
 
 
 class flaSkeletonInitiate:
-    def __init__(self, projectName, packages, hostName, port):
-        self.projectName, self.packages, self.hostName, self.port = projectName, packages, hostName, port
+    def __init__(self, projectName, hostName, port):
+        self.projectName, self.hostName, self.port = projectName, hostName, port
 
         # Clean Clutter
         self.projectName = projectName.strip().replace(' ', '')
@@ -144,6 +125,8 @@ class flaSkeletonInitiate:
                 packages = [x[1] for x in self.ap.items() if x[1] not in ("mongo", "skpy")]
             if pack == "gunicorn":
                 packages = [x[1] for x in self.ap.items() if x[1] not in ("mysqlclient", "skpy", "uwsgi")]
+            if pack == "all":
+                packages = [x[1] for x in self.ap.items() if x[1]]
         else:
             packages = [x[1] for x in self.ap.items() if x[1] not in ("mysqlclient", "skpy", "pika", "gunicorn")]
 
@@ -164,7 +147,7 @@ class flaSkeletonInitiate:
 
     @progress_wrapper
     def create_requirements_file(self):
-        for i in self.select_package_names(pack=self.packages):
+        for i in self.select_package_names(pack="all"):
             self.file_writer(file_name=self.pd + "/requirements.txt", content=i+"\n", mode="append")
         return True
 
@@ -206,19 +189,111 @@ class flaSkeletonInitiate:
 
     @progress_wrapper
     def create_configuration_files(self):
-        pass
+        if True:
+            old_loc = "Dependables/" + "configuration.py"
+            new_loc = self.cfgd + "/configuration.py"
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+
+            old_loc = "Dependables/" + "MongoDatabaseLibrary.py"
+            new_loc = self.libd + "/MongoDatabaseLibrary.py"
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+
+            old_loc = "Dependables/" + "MySQLDatabaseLibrary.py"
+            new_loc = self.libd + "/MySQLDatabaseLibrary.py"
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+        return True
 
     @progress_wrapper
     def create_library_files(self):
-        pass
+        if True:
+            old_loc = "Dependables/" + "MongoDatabaseLibrary.py"
+            new_loc = self.libd + "/MongoDatabaseLibrary.py"
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+
+            old_loc = "Dependables/" + "MySQLDatabaseLibrary.py"
+            new_loc = self.libd + "/MySQLDatabaseLibrary.py"
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+
+            old_loc = "Dependables/" + "TimeCalculator.py"
+            new_loc = self.libd + "/TimeCalculator.py"
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+        return True
 
     @progress_wrapper
     def create_model_files(self):
-        pass
+        old_loc = "Dependables/" + "_m_Home.py"
+        new_loc = self.libd + "/_m_Home.py"
+        with open(old_loc, 'r', encoding='utf-8') as old_f:
+            for _i in old_f.readlines():
+                self.file_writer(file_name=new_loc,
+                                 content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                     "PROJECTNAMEFSKLTN", self.projectName
+                                 ),
+                                 mode="append")
+        return True
 
     @progress_wrapper
     def create_view_files(self):
-        pass
+        old_loc = "Dependables/" + "_v_Home.py"
+        new_loc = self.libd + "/_v_Home.py"
+        with open(old_loc, 'r', encoding='utf-8') as old_f:
+            for _i in old_f.readlines():
+                self.file_writer(file_name=new_loc,
+                                 content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                     "PROJECTNAMEFSKLTN", self.projectName
+                                 ),
+                                 mode="append")
+        return True
+
+    @progress_wrapper
+    def create_template_files(self):
+        for i in ("Home.html", "Head.html", "Foot.html"):
+            old_loc = "Dependables/" + i
+            new_loc = self.libd + "/" + i
+            with open(old_loc, 'r', encoding='utf-8') as old_f:
+                for _i in old_f.readlines():
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
+                                         "PROJECTNAMEFSKLTN", self.projectName
+                                     ),
+                                     mode="append")
+        return True
 
     def initiate_project_creation(self):
         self.create_folder_structure()
@@ -230,7 +305,8 @@ class flaSkeletonInitiate:
         self.create_library_files()
         self.create_model_files()
         self.create_view_files()
-        return self.projectName, self.packages, self.hostName, self.port
+        self.create_template_files()
+        return True
 
 
 def execute():
@@ -250,7 +326,6 @@ def execute():
     parser_init.add_argument('--projectName', nargs=1, help="Name of the project", required=True)
     parser_init.add_argument('--hostName', nargs=1, help="Project Hostname")
     parser_init.add_argument('--port', nargs=1, help="Project Port")
-    parser_init.add_argument('--packages', nargs=1, help="What Packages?")
     parser_init.set_defaults(parser="init")
 
     # Arguments
@@ -270,12 +345,7 @@ def execute():
             else:
                 port = int(random.randrange(21000, 21999))
 
-            if args.packages:
-                packages = str(args.packages[0])
-            else:
-                packages = None
-
-            return flaSkeletonInitiate(projectName=projectName, packages=packages,
+            return flaSkeletonInitiate(projectName=projectName,
                                        hostName=hostName, port=port).initiate_project_creation()
 
         else:
