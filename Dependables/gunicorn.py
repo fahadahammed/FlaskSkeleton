@@ -102,7 +102,7 @@ reload_extra_files = get_reload_extra_files()
 #
 
 
-workers = multiprocessing.cpu_count()
+workers = multiprocessing.cpu_count() - 1
 worker_class = 'sync'
 worker_connections = 1000
 timeout = 30

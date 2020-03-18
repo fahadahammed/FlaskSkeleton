@@ -34,7 +34,7 @@ def progress_wrapper(func):
 
 # Variables
 ApplicationName = an = "flaskeleton"
-version = 1.1
+version = 1.2
 Description = f"""{an} version: {version} contains some interesting changes."""
 release_notes = f"""{Description}\n
 1. Initiated.\n
@@ -67,7 +67,7 @@ __pycache__*
 .vscode
 .vscode/
 .vscode/*
-logs.log
+*.log
 """
 
 
@@ -168,7 +168,12 @@ class flaSkeletonInitiate:
             new_loc = self.pd + "/" + i
             with open(old_loc, 'r', encoding='utf-8') as old_f:
                 for _i in old_f.readlines():
-                    self.file_writer(file_name=new_loc, content=_i.replace("PROJECTNAMEFSKLTN", self.projectName), mode="append")
+                    self.file_writer(file_name=new_loc,
+                                     content=_i.replace("PROJECTNAMEFSKLTN",
+                                                        self.projectName).replace("_FSKLTN_PORT",
+                                                                                  str(self.port)).replace("_FSKLTN_UWSGI_STATS_PORT", str(self.port+1))
+                                     ,
+                                     mode="append")
         return True
 
     @progress_wrapper
