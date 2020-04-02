@@ -288,7 +288,7 @@ class flaSkeletonInitiate:
 
     @progress_wrapper
     def create_template_files(self):
-        for i in ("Home.html", "Head.html", "Foot.html"):
+        for i in ("Home.html", "Head.html", "Foot.html", "Navigation.html"):
             old_loc = "Dependables/" + i
             new_loc = self.temd + "/" + i
             with open(old_loc, 'r', encoding='utf-8') as old_f:
