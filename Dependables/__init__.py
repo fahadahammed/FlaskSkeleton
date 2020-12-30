@@ -25,6 +25,8 @@ ncache = Cache(app, config={'CACHE_TYPE': app.config.get('CACHE_TYPE'),
                             'CACHE_KEY_PREFIX': app.config.get('CACHE_KEY_PREFIX'),
                             'CACHE_DEFAULT_TIMEOUT': app.config.get('CACHE_DEFAULT_TIMEOUT')
                             })
+# Example
+# @ncache.cached(timeout=60, key_prefix=str(section))
 
 # Limiter
 from flask_limiter import Limiter
@@ -32,7 +34,7 @@ from flask_limiter.util import get_remote_address
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["3000 per minute", "500 per second"],
+    default_limits=["30000 per minute", "5000 per second"],
 )
 
 

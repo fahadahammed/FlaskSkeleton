@@ -16,9 +16,12 @@ LOGGING_CONFIG = {
             'formatter': 'default'
         },
         'logfile': {
-            'class': 'logging.FileHandler',
+            # 'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': 'Logs/logs.log',
-            'formatter': 'default'
+            'formatter': 'default',
+            'maxBytes': 1000000,
+            'backupCount': 10
         }
     },
     'root': {
@@ -56,7 +59,7 @@ class DevelopmentConfig(BaseConfig):
 class ProductionConfig(BaseConfig):
     DEBUG = False
     TESTING = False
-    TEMPLATES_AUTO_RELOAD = False
+    TEMPLATES_AUTO_RELOAD = True
 
     ENV = 'prod'
 

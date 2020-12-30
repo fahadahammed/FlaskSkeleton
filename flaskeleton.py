@@ -90,11 +90,10 @@ class flaSkeletonInitiate:
             8: "redis",
             9: "setproctitle",
             10: "python-dateutil",
-            11: "skpy",
-            12: "pika",
-            13: "pymongo",
-            14: "apscheduler",
-            16: "uwsgi"
+            11: "pika",
+            12: "pymongo",
+            13: "apscheduler",
+            14: "uwsgi"
         }
         self.project_directory = self.pd = self.od + "/" + self.projectName
         self.project_inner_directory = self.pind = self.pd + "/" + self.projectName
@@ -118,7 +117,7 @@ class flaSkeletonInitiate:
     def select_package_names(self, pack=None):
         if pack:
             packages = [x[1] for x in self.ap.items() if
-                        x[1] not in ("mysqlclient", "skpy", "pika", "gunicorn")]
+                        x[1] not in ("mysqlclient", "pika", "gunicorn")]
             if pack == "mongo":
                 packages = [x[1] for x in self.ap.items() if x[1] not in ("mysqlclient", "skpy")]
             if pack == "mysql":
@@ -128,7 +127,7 @@ class flaSkeletonInitiate:
             if pack == "all":
                 packages = [x[1] for x in self.ap.items() if x[1]]
         else:
-            packages = [x[1] for x in self.ap.items() if x[1] not in ("mysqlclient", "skpy", "pika", "gunicorn")]
+            packages = [x[1] for x in self.ap.items() if x[1] not in ("mysqlclient", "pika", "gunicorn")]
 
         return packages
 
@@ -171,7 +170,7 @@ class flaSkeletonInitiate:
                     self.file_writer(file_name=new_loc,
                                      content=_i.replace("PROJECTNAMEFSKLTN",
                                                         self.projectName).replace("_FSKLTN_PORT",
-                                                                                  str(self.port)).replace("_FSKLTN_UWSGI_STATS_PORT", str(self.port+1))
+                                                                                  str(self.port)).replace("_FSKLTN_UWSGI_STATS_PORT", str(int(self.port)+1))
                                      ,
                                      mode="append")
         return True
@@ -203,26 +202,6 @@ class flaSkeletonInitiate:
                                      content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
                                          "PROJECTNAMEFSKLTN", self.projectName
                                      ).replace("_FSKLTN_HOST", self.hostName).replace("_FSKLTN_PORT", str(self.port)),
-                                     mode="append")
-
-            old_loc = "Dependables/" + "MongoDatabaseLibrary.py"
-            new_loc = self.libd + "/MongoDatabaseLibrary.py"
-            with open(old_loc, 'r', encoding='utf-8') as old_f:
-                for _i in old_f.readlines():
-                    self.file_writer(file_name=new_loc,
-                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
-                                         "PROJECTNAMEFSKLTN", self.projectName
-                                     ),
-                                     mode="append")
-
-            old_loc = "Dependables/" + "MySQLDatabaseLibrary.py"
-            new_loc = self.libd + "/MySQLDatabaseLibrary.py"
-            with open(old_loc, 'r', encoding='utf-8') as old_f:
-                for _i in old_f.readlines():
-                    self.file_writer(file_name=new_loc,
-                                     content=_i.replace("kPROJECTNAMEFSKLTN", self.projectName.upper()).replace(
-                                         "PROJECTNAMEFSKLTN", self.projectName
-                                     ),
                                      mode="append")
         return True
 
@@ -328,9 +307,9 @@ def execute():
 
     # create the parser for the 'init' command
     parser_init = subparsers.add_parser(name="init")
-    parser_init.add_argument('--projectName', nargs=1, help="Name of the project", required=True)
-    parser_init.add_argument('--hostName', nargs=1, help="Project Hostname")
-    parser_init.add_argument('--port', nargs=1, help="Project Port")
+    parser_init.add_argument('--projectName', '--pn', nargs=1, help="Name of the project", required=True)
+    parser_init.add_argument('--hostName', '--hn', nargs=1, help="Project Hostname")
+    parser_init.add_argument('--port', '--pt', nargs=1, help="Project Port")
     parser_init.set_defaults(parser="init")
 
     # Arguments
@@ -338,15 +317,25 @@ def execute():
     try:
         # Check
         if args.parser == "init":
-            projectName = str(args.projectName[0])
+
+            if args.projectName:
+                projectName = str(args.projectName[0])
+            elif args.pn:
+                projectName = str(args.pn[0])
+            else:
+                exit()
 
             if args.hostName:
                 hostName = str(args.hostName[0])
+            elif args.hn:
+                hostName = str(args.hn[0])
             else:
                 hostName = "127.0.0.1"
 
             if args.port:
                 port = str(args.port[0])
+            elif args.pt:
+                port = str(args.pt[0])
             else:
                 port = int(random.randrange(21000, 21999))
 
