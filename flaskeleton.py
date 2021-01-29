@@ -93,7 +93,8 @@ class flaSkeletonInitiate:
             11: "pika",
             12: "pymongo",
             13: "apscheduler",
-            14: "uwsgi"
+            14: "uwsgi",
+            15: "jwt"
         }
         self.project_directory = self.pd = self.od + "/" + self.projectName
         self.project_inner_directory = self.pind = self.pd + "/" + self.projectName

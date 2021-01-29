@@ -31,6 +31,9 @@ LOGGING_CONFIG = {
 
 
 class BaseConfig(object):
+    PROJECT_NAME = "PROJECTNAMEFSKLTN"
+
+
     PROTECTED_PATH = "ProtectedPath"
     THREADED = True
 
